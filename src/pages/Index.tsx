@@ -6,6 +6,9 @@ import HomePage from './HomePage';
 import ClientPage from './ClientPage';
 import ProviderPage from './ProviderPage';
 import AdminPage from './AdminPage';
+import LoginPage from './LoginPage';
+import RegisterClientPage from './RegisterClientPage';
+import RegisterProviderPage from './RegisterProviderPage';
 
 const Index = () => {
   const [currentPage, setCurrentPage] = useState('home');
@@ -24,6 +27,12 @@ const Index = () => {
         return <ProviderPage />;
       case 'admin':
         return <AdminPage />;
+      case 'login':
+        return <LoginPage onPageChange={handlePageChange} />;
+      case 'register-client':
+        return <RegisterClientPage onPageChange={handlePageChange} />;
+      case 'register-provider':
+        return <RegisterProviderPage onPageChange={handlePageChange} />;
       default:
         return <HomePage />;
     }

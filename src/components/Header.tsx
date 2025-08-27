@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { LogIn, UserPlus, Briefcase } from 'lucide-react';
 
 interface HeaderProps {
   currentPage: string;
@@ -17,10 +19,10 @@ const Header = ({ currentPage, onPageChange }: HeaderProps) => {
     { id: 'contact', label: 'Contact' },
   ];
 
-  const userTypeButtons = [
-    { id: 'client', label: 'Client', variant: 'outline' as const },
-    { id: 'prestataire', label: 'Prestataire', variant: 'default' as const },
-    { id: 'admin', label: 'Admin', variant: 'outline' as const },
+  const authButtons = [
+    { id: 'login', label: 'Connexion', variant: 'outline' as const, icon: LogIn },
+    { id: 'register-client', label: 'Inscription', variant: 'outline' as const, icon: UserPlus },
+    { id: 'register-provider', label: 'Devenir prestataire', variant: 'default' as const, icon: Briefcase },
   ];
 
   return (
@@ -61,26 +63,31 @@ const Header = ({ currentPage, onPageChange }: HeaderProps) => {
             ))}
           </nav>
 
-          {/* User Type Buttons */}
+          {/* Auth Buttons & Theme Toggle */}
           <div className="hidden md:flex items-center space-x-3">
-            {userTypeButtons.map((button) => (
-              <motion.div key={button.id} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
-                  variant={button.variant}
-                  size="sm"
-                  onClick={() => onPageChange(button.id)}
-                  className={`
-                    ${button.variant === 'default' 
-                      ? 'bg-orange hover:bg-orange-600 text-orange-foreground border-0 shadow-orange' 
-                      : 'border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary'
-                    }
-                    transition-all duration-300 font-semibold px-6 py-2 rounded-full
-                  `}
-                >
-                  {button.label}
-                </Button>
-              </motion.div>
-            ))}
+            {authButtons.map((button) => {
+              const IconComponent = button.icon;
+              return (
+                <motion.div key={button.id} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    variant={button.variant}
+                    size="sm"
+                    onClick={() => onPageChange(button.id)}
+                    className={`
+                      ${button.variant === 'default' 
+                        ? 'bg-orange hover:bg-orange-600 text-orange-foreground border-0 shadow-orange' 
+                        : 'border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary'
+                      }
+                      transition-all duration-300 font-semibold px-4 py-2 rounded-full flex items-center gap-2
+                    `}
+                  >
+                    <IconComponent className="h-4 w-4" />
+                    {button.label}
+                  </Button>
+                </motion.div>
+              );
+            })}
+            <ThemeToggle />
           </div>
 
           {/* Mobile Menu Button */}
@@ -117,26 +124,33 @@ const Header = ({ currentPage, onPageChange }: HeaderProps) => {
                 </button>
               ))}
               <div className="flex flex-col space-y-2 pt-4 border-t border-primary-600">
-                {userTypeButtons.map((button) => (
-                  <Button
-                    key={button.id}
-                    variant={button.variant}
-                    size="sm"
-                    onClick={() => {
-                      onPageChange(button.id);
-                      setIsMenuOpen(false);
-                    }}
-                    className={`
-                      ${button.variant === 'default' 
-                        ? 'bg-orange hover:bg-orange-600 text-orange-foreground' 
-                        : 'border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary'
-                      }
-                      transition-all duration-300 font-semibold rounded-full
-                    `}
-                  >
-                    {button.label}
-                  </Button>
-                ))}
+                {authButtons.map((button) => {
+                  const IconComponent = button.icon;
+                  return (
+                    <Button
+                      key={button.id}
+                      variant={button.variant}
+                      size="sm"
+                      onClick={() => {
+                        onPageChange(button.id);
+                        setIsMenuOpen(false);
+                      }}
+                      className={`
+                        ${button.variant === 'default' 
+                          ? 'bg-orange hover:bg-orange-600 text-orange-foreground' 
+                          : 'border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary'
+                        }
+                        transition-all duration-300 font-semibold rounded-full flex items-center gap-2
+                      `}
+                    >
+                      <IconComponent className="h-4 w-4" />
+                      {button.label}
+                    </Button>
+                  );
+                })}
+                <div className="flex justify-center pt-2">
+                  <ThemeToggle />
+                </div>
               </div>
             </div>
           </motion.div>
